@@ -25,6 +25,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 @Destination
 fun HomeTabScreen(
+    id: Int,
     viewModel: HomeTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state

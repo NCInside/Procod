@@ -55,6 +55,12 @@ class ChallengeTabViewModel @Inject constructor(
                 is AuthResult.Authorized -> {
                     state = state.copy(
                         challenges = result.data!!
+                            .filter{
+                                (it.Title!!.contains(state.searchQuery, ignoreCase = true) ||
+                                        it.Description!!.contains(state.searchQuery, ignoreCase = true)) &&
+                                        (state.filterId == null ||
+                                                it.ChallengeLabels!!.indexOfFirst { it.ID == state.filterId } != -1)
+                            }
                     )
                 }
             }

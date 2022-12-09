@@ -23,7 +23,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 @Destination
 fun ChallengeTabScreen(
-    viewModel: ChallengeTabViewModel = hiltViewModel(),
+    id: Int,
+    viewModel: ChallengeTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
@@ -65,6 +66,9 @@ fun ChallengeTabScreen(
                     )
                 }
             }
+            Text(
+                text = "${state.filterId}, ${state.searchQuery}"
+            )
             SwipeRefresh(
                 state = swipeRefreshState,
                 onRefresh = { viewModel.onEvent(ChallengeTabEvent.Refresh) }

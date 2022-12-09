@@ -20,7 +20,8 @@ fun LabelItem(
 ) {
     Card(
         shape = RoundedCornerShape(50),
-        backgroundColor = color
+        backgroundColor = color,
+        modifier = modifier
     ) {
         Text(
             text = label.Label!!,
