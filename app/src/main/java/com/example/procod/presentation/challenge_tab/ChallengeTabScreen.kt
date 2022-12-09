@@ -66,9 +66,6 @@ fun ChallengeTabScreen(
                     )
                 }
             }
-            Text(
-                text = "${state.filterId}, ${state.searchQuery}"
-            )
             SwipeRefresh(
                 state = swipeRefreshState,
                 onRefresh = { viewModel.onEvent(ChallengeTabEvent.Refresh) }
