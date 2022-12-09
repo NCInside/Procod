@@ -6,9 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.procod.data.repository.AppRepository
-import com.example.procod.model.Challenge
 import com.example.procod.util.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,23 +19,30 @@ class HomeTabViewModel @Inject constructor(
 ): ViewModel() {
 
     var state by mutableStateOf(HomeTabState())
+    private var searchJob: Job? = null
 
     init {
         getChallenges()
-        getUser()
-        getStatistic()
+        getUser(null)
+        getStatisticUser()
+        getUsers()
     }
 
     fun onEvent(event: HomeTabEvent) {
-        when(event) {
+        when (event) {
             is HomeTabEvent.Refresh -> {
-
+                getChallenges()
+                getUser(null)
+                getStatisticUser()
+                getUsers()
             }
             is HomeTabEvent.OnSearchQueryChange -> {
-
-            }
-            is HomeTabEvent.OnFilterIdChange -> {
-
+                state = state.copy(searchQuery = event.query)
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(750L)
+                    getUsers()
+                }
             }
         }
     }
@@ -42,8 +50,8 @@ class HomeTabViewModel @Inject constructor(
     private fun getChallenges() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            val challengeResult = repository.getChallenges(null)
-            when (val result = challengeResult) {
+            val challengesResult = repository.getChallenges(null)
+            when (val result = challengesResult) {
                 is AuthResult.Authorized -> {
                     state = state.copy(
                         challenges = result.data!!
@@ -54,10 +62,10 @@ class HomeTabViewModel @Inject constructor(
         }
     }
 
-    private fun getUser() {
+    private fun getUser(id: Int?) {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            val userResult = repository.getUser()
+            val userResult = repository.getUser(id)
             when (val result = userResult) {
                 is AuthResult.Authorized -> {
                     state = state.copy(
@@ -70,16 +78,31 @@ class HomeTabViewModel @Inject constructor(
         }
     }
 
-    private fun getStatistic() {
+    private fun getStatisticUser() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            val statisticResult = repository.getStatistic()
+            val statisticResult = repository.getStatisticUser()
             when (val result = statisticResult) {
                 is AuthResult.Authorized -> {
                     state = state.copy(
                         chalMade = result.data?.Num_challenge_made!!,
                         chalComplete = result.data.Num_challenge_completed!!,
                         chalAttempt = result.data.Num_challenge_attempted!!
+                    )
+                }
+            }
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    private fun getUsers() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val usersResult = repository.getUsers()
+            when (val result = usersResult) {
+                is AuthResult.Authorized -> {
+                    state = state.copy(
+                        users = result.data!!.filter { it.Username!!.contains(state.searchQuery, ignoreCase = true) }
                     )
                 }
             }

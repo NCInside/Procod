@@ -36,7 +36,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(ChallengeTabScreenDestination(2)) {
+                    navigator.navigate(HomeTabScreenDestination(2)) {
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }

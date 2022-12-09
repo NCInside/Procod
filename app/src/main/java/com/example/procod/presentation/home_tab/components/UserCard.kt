@@ -9,8 +9,8 @@ import com.example.procod.model.User
 
 @Composable
 fun UserCard(
-    modifier: Modifier = Modifier,
-    user: User
+    user: User,
+    modifier: Modifier = Modifier
 ) {
     Card() {
         Row() {
@@ -18,7 +18,7 @@ fun UserCard(
                 text = user.Username!!
             )
             Text(
-                text = user.Email!!
+                text = user.Statistics?.get(0)?.Num_challenge_completed.toString()
             )
         }
     }

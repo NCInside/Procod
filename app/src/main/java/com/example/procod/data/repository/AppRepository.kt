@@ -77,11 +77,27 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getUser() : AuthResult<User> {
+    suspend fun getUser(userid: Int?) : AuthResult<User> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
-            val id = prefs.getInt("id", -1)
+            val id = userid ?: prefs.getInt("id", -1)
             val result = api.getUser(token, id)
+            AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun getUsers() : AuthResult<List<User>> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val result = api.getUsers(token)
             AuthResult.Authorized(result)
         } catch(e: HttpException) {
             if(e.code() == 401) {
@@ -117,6 +133,23 @@ class AppRepository @Inject constructor(
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
             val id = prefs.getInt("id", -1)
             val result = api.getStatistic(token, id)
+            AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun getStatisticUser() : AuthResult<Statistic> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            val result = api.getStatisticUser(token, id)
             AuthResult.Authorized(result)
         } catch(e: HttpException) {
             if(e.code() == 401) {

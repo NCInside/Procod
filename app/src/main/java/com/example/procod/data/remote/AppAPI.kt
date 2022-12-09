@@ -61,6 +61,12 @@ interface AppAPI {
         @Path("id") id: Int
     ): Statistic
 
+    @GET("statistics/users/{id}")
+    suspend fun getStatisticUser(
+        @Header("authorization") token: String,
+        @Path("id") id: Int
+    ): Statistic
+
     @GET("statistics/all/{id}")
     suspend fun getStatistics(
         @Header("authorization") token: String,
