@@ -9,5 +9,10 @@ data class HomeTabState(
     val searchQuery: String = "",
     val filterId: Int = 0,
     val challenges: List<Challenge> = emptyList(),
-    val users: List<User> = emptyList()
+    val users: List<User> = emptyList(),
+    val username: String = "",
+    val email: String = "",
+    val chalComplete: Int = 0,
+    val chalMade: Int = 0,
+    val chalAttempt: Int = 0
 )

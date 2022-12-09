@@ -1,8 +1,5 @@
 package com.example.procod.presentation.login
 
-import com.example.procod.model.User
-import com.example.procod.model.UserData
-
 data class LoginState(
     val username: String = "",
     val password: String = "",
