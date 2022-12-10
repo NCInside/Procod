@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.procod.data.remote.AppAPI
+import com.example.procod.data.remote.JudgeAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,16 @@ object AppModule {
     fun provideAppApi(): AppAPI {
         return Retrofit.Builder()
             .baseUrl(AppAPI.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJudgeApi(): JudgeAPI {
+        return Retrofit.Builder()
+            .baseUrl(JudgeAPI.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

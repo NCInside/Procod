@@ -3,6 +3,7 @@ package com.example.procod.presentation.home_tab
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -108,6 +109,15 @@ fun HomeTabScreen(
                     }
                 }
             }
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if(state.isLoading) {
+            CircularProgressIndicator()
         }
     }
 

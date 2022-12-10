@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.presentation.destinations.ChallengeTabScreenDestination
 import com.example.procod.presentation.destinations.HomeTabScreenDestination
 import com.example.procod.presentation.destinations.LoginScreenDestination
+import com.example.procod.presentation.destinations.SandboxTabScreenDestination
 import com.example.procod.util.AuthResult
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -36,7 +37,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(HomeTabScreenDestination(2)) {
+                    navigator.navigate(SandboxTabScreenDestination(2)) {
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }
