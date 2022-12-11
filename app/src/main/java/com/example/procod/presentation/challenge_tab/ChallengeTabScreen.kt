@@ -16,14 +16,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.presentation.challenge_tab.components.ChallengeItem
 import com.example.procod.presentation.challenge_tab.components.LabelItem
+import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun ChallengeTabScreen(
     id: Int,
+    navigator: DestinationsNavigator,
     viewModel: ChallengeTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -77,7 +80,9 @@ fun ChallengeTabScreen(
                             challenge = challenge,
                             modifier = Modifier
                                 .clickable {
-
+                                    navigator.navigate(
+                                        ChallengeWorkScreenDestination(id)
+                                    )
                                 }
                         )
                     }

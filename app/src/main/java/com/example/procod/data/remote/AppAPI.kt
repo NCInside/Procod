@@ -81,11 +81,13 @@ interface AppAPI {
 
     @POST("statistics")
     suspend fun postStatistic(
+        @Header("authorization") token: String,
         @Body request: StatRequest
     )
 
     @PUT("statistics") //need checks
     suspend fun putStatistics(
+        @Header("authorization") token: String,
         @Body request: StatRequest
     )
 
@@ -96,6 +98,7 @@ interface AppAPI {
 
     @POST("submissions")
     suspend fun postSubmission(
+        @Header("authorization") token: String,
         @Body request: SubmitRequest
     )
 
