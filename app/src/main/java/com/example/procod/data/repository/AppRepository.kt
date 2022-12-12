@@ -128,6 +128,23 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun getChallengesSubmission() : AuthResult<List<Challenge>> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            val result = api.getChallengesSubmission(token, id)
+            AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
     suspend fun getChallenge(id: Int) : AuthResult<Challenge> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
