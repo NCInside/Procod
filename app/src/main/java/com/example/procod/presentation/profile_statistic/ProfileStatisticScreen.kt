@@ -1,4 +1,4 @@
-package com.example.procod.presentation.challenge_make
+package com.example.procod.presentation.profile_statistic
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -6,9 +6,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun ChallengeMakeScreen(
+fun ProfileStatisticScreen(
     id: Int,
-    viewModel: ChallengeMakeViewModel = hiltViewModel()
+    viewModel: ProfileStatisticViewModel = hiltViewModel()
 ) {
 
 }

@@ -66,7 +66,7 @@ class ChallengeWorkViewModel @Inject constructor(
                 is AuthResult.Authorized -> {
                     state = state.copy(token = result.data!!.token)
                     coroutineScope {
-                        getStatistic()
+                        getStatisticUser()
                         while (state.result == null || state.result?.status?.id!! < 3) {
                             getResult(state.token)
                             delay(100)
@@ -102,10 +102,10 @@ class ChallengeWorkViewModel @Inject constructor(
                         )
                         postStatistic(
                             num_challenge_made = state.statistic?.Num_challenge_made!!,
-                            num_challenge_completed = state.statistic?.Num_challenge_completed!!,
+                            num_challenge_completed = state.statistic?.Num_challenge_completed!! + if (state.result?.status?.id!! == 3) 1 else 0,
                             num_challenge_attempted = state.statistic?.Num_challenge_completed!! + 1,
-                            total_runtime = state.statistic?.Total_runtime!!,
-                            total_memory = state.statistic?.Total_memory!!
+                            total_runtime = state.statistic?.Total_runtime!! + (state.result?.time!!.toDouble() * 1000).toInt(),
+                            total_memory = state.statistic?.Total_memory!! + state.result?.memory!!
                         )
                     }
                 }
@@ -133,14 +133,18 @@ class ChallengeWorkViewModel @Inject constructor(
         }
     }
 
-    private fun getStatistic() {
+    private fun getStatisticUser() {
         viewModelScope.launch {
-            val statisticResult = appRepository.getStatistic()
+            state = state.copy(isLoading = true)
+            val statisticResult = appRepository.getStatisticUser()
             when (val result = statisticResult) {
                 is AuthResult.Authorized -> {
-                    state = state.copy(statistic = result.data)
+                    state = state.copy(
+                        statistic = result.data
+                    )
                 }
             }
+            state = state.copy(isLoading = false)
         }
     }
 

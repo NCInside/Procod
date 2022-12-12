@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.presentation.challenge_tab.components.ChallengeItem
 import com.example.procod.presentation.challenge_tab.components.LabelItem
+import com.example.procod.presentation.destinations.ChallengeMakeScreenDestination
 import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -36,7 +37,9 @@ fun ChallengeTabScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    //navigate to challenge make
+                    navigator.navigate(
+                        ChallengeMakeScreenDestination(id)
+                    )
                 }
             ) {
                 Icon(Icons.Filled.Add, "")

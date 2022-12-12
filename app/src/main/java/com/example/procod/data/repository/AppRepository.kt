@@ -144,11 +144,11 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getStatistic() : AuthResult<Statistic> {
+    suspend fun getStatisticsUser() : AuthResult<List<Statistic>> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
             val id = prefs.getInt("id", -1)
-            val result = api.getStatistic(token, id)
+            val result = api.getStatisticsUserAll(token, id)
             AuthResult.Authorized(result)
         } catch(e: HttpException) {
             if(e.code() == 401) {
