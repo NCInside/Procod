@@ -26,6 +26,13 @@ interface AppAPI {
         @Path("id") id: Int
     ): User
 
+    @PUT("users/{id}")
+    suspend fun putUser(
+        @Header("authorization") token: String,
+        @Path("id") id: Int,
+        @Body request: RegisterRequest
+    ): User
+
     @GET("users")
     suspend fun getUsers(
         @Header("authorization") token: String
@@ -42,6 +49,57 @@ interface AppAPI {
         @Header("authorization") token: String,
         @Path("id") id: Int
     ): Challenge
+
+    @POST("challenges")
+    suspend fun postChallenge(
+        @Header("authorization") token: String,
+        @Body request: ChallRequest
+    ) : Challenge
+
+    @PUT("challenges/{id}")
+    suspend fun putChallenge(
+        @Header("authorization") token: String,
+        @Path("id") id: Int,
+        @Body request: ChallRequest
+    )
+
+    @POST("challenges/example")
+    suspend fun postChallengeExample(
+        @Header("authorization") token: String,
+        @Body request: ExamRequest
+    )
+
+    @DELETE("challenges/example/{id}")
+    suspend fun deleteChallengeExample(
+        @Header("authorization") token: String,
+        @Path("id") id: Int
+    )
+
+    @POST("challenges/target")
+    suspend fun postChallengeTarget(
+        @Header("authorization") token: String,
+        @Body request: TargetRequest
+    )
+
+    @DELETE("challenges/target/{id}")
+    suspend fun deleteChallengeTarget(
+        @Header("authorization") token: String,
+        @Path("id") id: Int
+    )
+
+    @POST("challenges/label")
+    suspend fun postChallengeLabel(
+        @Header("authorization") token: String,
+        @Query("challengeid") challengeId: Int,
+        @Query("labelid") labelId: Int
+    )
+
+    @DELETE("challenges/label")
+    suspend fun deleteChallengeLabel(
+        @Header("authorization") token: String,
+        @Query("challengeid") challengeId: Int,
+        @Query("labelid") labelId: Int
+    )
 
     @GET("challenges/users/{id}")
     suspend fun getChallengesUser(
@@ -103,7 +161,7 @@ interface AppAPI {
     )
 
     companion object {
-        const val BASE_URL = "http://192.168.1.8:3000/"
+        const val BASE_URL = "http://192.168.1.13:3000/"
     }
 
 }

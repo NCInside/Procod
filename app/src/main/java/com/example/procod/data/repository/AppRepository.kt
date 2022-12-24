@@ -1,6 +1,7 @@
 package com.example.procod.data.repository
 
 import android.content.SharedPreferences
+import android.icu.text.CaseMap.Title
 import com.example.procod.data.remote.AppAPI
 import com.example.procod.model.*
 import com.example.procod.util.AuthResult
@@ -94,6 +95,35 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun putUser(
+        username: String,
+        email: String,
+        password: String
+    ) : AuthResult<User> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            val result = api.putUser(
+                token = token,
+                id = id,
+                request = RegisterRequest(
+                    username = username,
+                    email = email,
+                    password = password
+                )
+            )
+            AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
     suspend fun getUsers() : AuthResult<List<User>> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
@@ -150,6 +180,206 @@ class AppRepository @Inject constructor(
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
             val result = api.getChallenge(token, id)
             AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun postChallenge(
+        title: String,
+        description: String,
+    ) : AuthResult<Challenge> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            val result = api.postChallenge(
+                token = token,
+                request = ChallRequest(
+                    Title = title,
+                    Description = description,
+                    UserID = id
+                )
+            )
+            AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun putChallenge(
+        challengeid: Int,
+        title: String,
+        description: String,
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            api.putChallenge(
+                token = token,
+                id = challengeid,
+                request = ChallRequest(
+                    Title = title,
+                    Description = description,
+                    UserID = id
+                )
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun postChallengeExample(
+        input: String,
+        output: String,
+        description: String,
+        challengeid: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.postChallengeExample(
+                token = token,
+                request = ExamRequest(
+                    Ex_input = input,
+                    Ex_output = output,
+                    Description = description,
+                    ChallengeID = challengeid
+                )
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun deleteChallengeExample(
+        id: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.deleteChallengeExample(
+                token = token,
+                id = id
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun postChallengeTarget(
+        input: String,
+        output: String,
+        challengeid: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.postChallengeTarget(
+                token = token,
+                request = TargetRequest(
+                    Input = input,
+                    Target_output = output,
+                    ChallengeID = challengeid
+                )
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun deleteChallengeTarget(
+        id: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.deleteChallengeTarget(
+                token = token,
+                id = id
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun postChallengeLabel(
+        labelid: Int,
+        challengeid: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.postChallengeLabel(
+                token = token,
+                challengeId = challengeid,
+                labelId = labelid
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun deleteChallengeLabel(
+        labelid: Int,
+        challengeid: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.deleteChallengeLabel(
+                token = token,
+                challengeId = challengeid,
+                labelId = labelid
+            )
+            AuthResult.Authorized()
         } catch(e: HttpException) {
             if(e.code() == 401) {
                 AuthResult.Unauthorized()

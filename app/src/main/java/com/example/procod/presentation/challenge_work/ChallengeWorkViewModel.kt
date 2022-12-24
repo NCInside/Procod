@@ -31,7 +31,11 @@ class ChallengeWorkViewModel @Inject constructor(
     fun onEvent(event: ChallengeWorkEvent) {
         when(event) {
             is ChallengeWorkEvent.Reset -> {
-                state = state.copy(code = "")
+                state = state.copy(
+                    code = "",
+                    token = "",
+                    result = null
+                )
             }
             is ChallengeWorkEvent.Submit -> {
                 runCode(state.code, state.challenge?.ChallengeTargets?.get(0)!!.Input!!)
@@ -95,14 +99,14 @@ class ChallengeWorkViewModel @Inject constructor(
                         postSubmission(
                             code = state.code,
                             runtime = (state.result?.time!!.toDouble() * 1000).toInt(),
-                            is_correct = state.result?.stdout == state.challenge?.ChallengeTargets?.get(0)!!.Target_output!!,
-                            error = state.result?.stderr!!,
+                            is_correct = state.result?.stdout == "${state.challenge?.ChallengeTargets?.get(0)!!.Target_output!!}\n",
+                            error = state.result?.stderr,
                             memory = state.result?.memory!!,
                             challengeid = savedStateHandle.get<Int>("id")!!
                         )
                         postStatistic(
                             num_challenge_made = state.statistic?.Num_challenge_made!!,
-                            num_challenge_completed = state.statistic?.Num_challenge_completed!! + if (state.result?.status?.id!! == 3) 1 else 0,
+                            num_challenge_completed = state.statistic?.Num_challenge_completed!! + if (state.result?.stdout == "${state.challenge?.ChallengeTargets?.get(0)!!.Target_output!!}\n") 1 else 0,
                             num_challenge_attempted = state.statistic?.Num_challenge_completed!! + 1,
                             total_runtime = state.statistic?.Total_runtime!! + (state.result?.time!!.toDouble() * 1000).toInt(),
                             total_memory = state.statistic?.Total_memory!! + state.result?.memory!!
@@ -117,7 +121,7 @@ class ChallengeWorkViewModel @Inject constructor(
         code: String,
         runtime: Int,
         is_correct: Boolean,
-        error: String,
+        error: String?,
         memory: Int,
         challengeid: Int
     ) {
@@ -126,7 +130,7 @@ class ChallengeWorkViewModel @Inject constructor(
                 code = code,
                 runtime = runtime,
                 is_correct = is_correct,
-                error = error,
+                error = error ?: "",
                 memory = memory,
                 challengeid = challengeid
             )

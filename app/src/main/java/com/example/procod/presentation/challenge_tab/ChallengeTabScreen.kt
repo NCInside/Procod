@@ -84,7 +84,7 @@ fun ChallengeTabScreen(
                             modifier = Modifier
                                 .clickable {
                                     navigator.navigate(
-                                        ChallengeWorkScreenDestination(id)
+                                        ChallengeWorkScreenDestination(challenge.ID!!)
                                     )
                                 }
                         )

@@ -17,10 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.procod.presentation.destinations.ChallengeTabScreenDestination
-import com.example.procod.presentation.destinations.HomeTabScreenDestination
-import com.example.procod.presentation.destinations.LoginScreenDestination
-import com.example.procod.presentation.destinations.SandboxTabScreenDestination
+import com.example.procod.presentation.destinations.*
 import com.example.procod.util.AuthResult
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -37,7 +34,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(SandboxTabScreenDestination(2)) {
+                    navigator.navigate(ProfileTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }

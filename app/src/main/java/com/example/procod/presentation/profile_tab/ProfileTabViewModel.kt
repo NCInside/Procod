@@ -29,6 +29,25 @@ class ProfileTabViewModel @Inject constructor(
                 getUser(null)
                 getStatisticUser()
             }
+            is ProfileTabEvent.OnEmailChange -> {
+                state = state.copy(email = event.query)
+            }
+            is ProfileTabEvent.OnNameChange -> {
+                state = state.copy(username = event.query)
+            }
+            is ProfileTabEvent.OnPassChange -> {
+                state = state.copy(password = event.query)
+            }
+            is ProfileTabEvent.EditProfile -> {
+                state = state.copy(isEditing = true)
+            }
+            is ProfileTabEvent.CancelProfile -> {
+                state = state.copy(isEditing = false)
+            }
+            is ProfileTabEvent.SubmitProfile -> {
+                state = state.copy(isEditing = false)
+                putUser()
+            }
         }
     }
 
@@ -36,6 +55,27 @@ class ProfileTabViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val userResult = repository.getUser(id)
+            when (val result = userResult) {
+                is AuthResult.Authorized -> {
+                    state = state.copy(
+                        username = result.data?.Username!!,
+                        email = result.data.Email!!,
+                        challenges = result.data.Challenges ?: emptyList()
+                    )
+                }
+            }
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    private fun putUser() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val userResult = repository.putUser(
+                username = state.username,
+                email = state.email,
+                password = state.password
+            )
             when (val result = userResult) {
                 is AuthResult.Authorized -> {
                     state = state.copy(
