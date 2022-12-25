@@ -68,14 +68,13 @@ class ChallengeWorkViewModel @Inject constructor(
             val tokenResult = judgeRepository.submitCode(code = code, stdin = input)
             when (val result = tokenResult) {
                 is AuthResult.Authorized -> {
-                    state = state.copy(token = result.data!!.token)
+                    state = state.copy(token = result.data!!.token,result = null)
                     coroutineScope {
                         getStatisticUser()
                         while (state.result == null || state.result?.status?.id!! < 3) {
                             getResult(state.token)
                             delay(100)
                         }
-
                     }
                 }
                 is AuthResult.Unauthorized -> {

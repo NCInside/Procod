@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun ChallengeMakeScreen(
     id: Int,
+    navigator: DestinationsNavigator,
     viewModel: ChallengeMakeViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -180,7 +182,10 @@ fun ChallengeMakeScreen(
                     }
                 }
             }
-            Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.Submit) }) {
+            Button(onClick = {
+                viewModel.onEvent(ChallengeMakeEvent.Submit)
+                navigator.navigateUp()
+            }) {
                 Text(text = "Submit")
             }
         }

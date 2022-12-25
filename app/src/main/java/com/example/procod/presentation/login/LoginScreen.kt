@@ -34,7 +34,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(ProfileTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
+                    navigator.navigate(ChallengeTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }

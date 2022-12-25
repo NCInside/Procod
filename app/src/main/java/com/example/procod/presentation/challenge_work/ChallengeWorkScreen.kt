@@ -14,11 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.presentation.challenge_tab.ChallengeTabEvent
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun ChallengeWorkScreen(
     id: Int,
+    navigator: DestinationsNavigator,
     viewModel: ChallengeWorkViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -47,11 +49,22 @@ fun ChallengeWorkScreen(
                     .fillMaxWidth(),
             )
             Row() {
-                Button(onClick = { viewModel.onEvent(ChallengeWorkEvent.Submit) }) {
+                Button(onClick = {
+                    viewModel.onEvent(ChallengeWorkEvent.Submit)
+                }) {
                     Text(text = "Submit")
                 }
                 Button(onClick = { viewModel.onEvent(ChallengeWorkEvent.Reset) }) {
                     Text(text = "Reset")
+                }
+            }
+            if (state.result != null) {
+                if (state.result.status?.id!! > 4) {
+                    Text(text = "Error; Incorrect Syntax")
+                }  else if (state.result.status.id == 3 && state.result.stdout == "${state.challenge.ChallengeTargets?.get(0)!!.Target_output!!}\n") {
+                    Text(text = "Correct!")
+                } else if (state.result.status.id == 3) {
+                    Text(text = "Incorrect!")
                 }
             }
         }
