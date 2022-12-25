@@ -1,12 +1,11 @@
 package com.example.procod.presentation.challenge_make
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -26,7 +25,9 @@ fun ChallengeMakeScreen(
     
     if (!state.isLoading) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
         ) {
             OutlinedTextField(
                 value = state.title,
@@ -43,13 +44,25 @@ fun ChallengeMakeScreen(
                     .fillMaxWidth(),
             )
             if (state.challenge?.ChallengeExamples != null) {
-                LazyColumn() {
+                LazyColumn(
+                    modifier = Modifier.height(100.dp)
+                ) {
                     items(state.challenge.ChallengeExamples.size!!) { i ->
                         val example = state.challenge.ChallengeExamples[i]
                         Row() {
                             Text(text = "Input: ${example.Ex_input!!}")
                             Text(text = "Output: ${example.Ex_output!!}")
                             Text(text = "Description: ${example.Description!!}")
+                            Button(onClick = {
+                                viewModel.onEvent(ChallengeMakeEvent.EditExample(
+                                    id = example.ID!!,
+                                    input = example.Ex_input,
+                                    output = example.Ex_output,
+                                    desc = example.Description
+                                ))
+                            }) {
+                                Text(text = "Edit Example")
+                            }
                             Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.DeleteExample(example.ID!!)) }) {
                                 Text(text = "Delete Example")
                             }
@@ -78,16 +91,34 @@ fun ChallengeMakeScreen(
                     .padding(16.dp)
                     .fillMaxWidth(),
             )
-            Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.SubmitExample) }) {
-                Text(text = "Submit Example")
+            Row() {
+                Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.SubmitExample) }) {
+                    Text(text = if (state.exId > 0) "Edit Example" else "Submit Example")
+                }
+                if (state.exId > 0) {
+                    Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.CancelExample) }) {
+                        Text(text = "Cancel Edit")
+                    }
+                }
             }
             if (state.challenge?.ChallengeTargets != null) {
-                LazyColumn() {
+                LazyColumn(
+                    modifier = Modifier.height(100.dp)
+                ) {
                     items(state.challenge.ChallengeTargets.size!!) { i ->
                         val target = state.challenge.ChallengeTargets[i]
                         Row() {
                             Text(text = "Input: ${target.Input!!}")
                             Text(text = "Output: ${target.Target_output!!}")
+                            Button(onClick = {
+                                viewModel.onEvent(ChallengeMakeEvent.EditTarget(
+                                    id = target.ID!!,
+                                    input = target.Input,
+                                    output = target.Target_output
+                                ))
+                            }) {
+                                Text(text = "Edit Target")
+                            }
                             Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.DeleteTarget(target.ID!!)) }) {
                                 Text(text = "Delete Target")
                             }
@@ -109,8 +140,15 @@ fun ChallengeMakeScreen(
                     .padding(16.dp)
                     .fillMaxWidth(),
             )
-            Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.SubmitTarget) }) {
-                Text(text = "Submit Target")
+            Row() {
+                Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.SubmitTarget) }) {
+                    Text(text = if (state.targetId > 0) "Edit Target" else "Submit Target")
+                }
+                if (state.targetId > 0) {
+                    Button(onClick = { viewModel.onEvent(ChallengeMakeEvent.CancelTarget) }) {
+                        Text(text = "Cancel Edit")
+                    }
+                }
             }
             if (state.challenge?.ChallengeLabels != null) {
                 LazyRow() {

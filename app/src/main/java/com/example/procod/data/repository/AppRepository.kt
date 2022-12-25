@@ -62,6 +62,10 @@ class AppRepository @Inject constructor(
         }
     }
 
+    fun logout() {
+        prefs.edit().remove("jwt").remove("id").commit()
+    }
+
     suspend fun authenticate(): AuthResult<Unit> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
@@ -113,6 +117,23 @@ class AppRepository @Inject constructor(
                 )
             )
             AuthResult.Authorized(result)
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun deleteUser() : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            val id = prefs.getInt("id", -1)
+            api.deleteUser(token, id)
+            AuthResult.Authorized()
         } catch(e: HttpException) {
             if(e.code() == 401) {
                 AuthResult.Unauthorized()
@@ -247,6 +268,27 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteChallenge(
+        id: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.deleteChallenge(
+                token = token,
+                id = id
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
     suspend fun postChallengeExample(
         input: String,
         output: String,
@@ -257,6 +299,37 @@ class AppRepository @Inject constructor(
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
             api.postChallengeExample(
                 token = token,
+                request = ExamRequest(
+                    Ex_input = input,
+                    Ex_output = output,
+                    Description = description,
+                    ChallengeID = challengeid
+                )
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun putChallengeExample(
+        input: String,
+        output: String,
+        description: String,
+        challengeid: Int,
+        id: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.putChallengeExample(
+                token = token,
+                id = id,
                 request = ExamRequest(
                     Ex_input = input,
                     Ex_output = output,
@@ -306,6 +379,35 @@ class AppRepository @Inject constructor(
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
             api.postChallengeTarget(
                 token = token,
+                request = TargetRequest(
+                    Input = input,
+                    Target_output = output,
+                    ChallengeID = challengeid
+                )
+            )
+            AuthResult.Authorized()
+        } catch(e: HttpException) {
+            if(e.code() == 401) {
+                AuthResult.Unauthorized()
+            } else {
+                AuthResult.UnknownError()
+            }
+        } catch (e: Exception) {
+            AuthResult.UnknownError()
+        }
+    }
+
+    suspend fun putChallengeTarget(
+        input: String,
+        output: String,
+        challengeid: Int,
+        id: Int
+    ) : AuthResult<Unit> {
+        return try {
+            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
+            api.putChallengeTarget(
+                token = token,
+                id = id,
                 request = TargetRequest(
                     Input = input,
                     Target_output = output,

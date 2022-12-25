@@ -3,6 +3,7 @@ package com.example.procod.presentation.challenge_make
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.procod.data.repository.AppRepository
@@ -13,13 +14,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeMakeViewModel @Inject constructor(
-    private val repository: AppRepository
+    private val repository: AppRepository,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     var state by mutableStateOf(ChallengeMakeState())
+    var id: Int = -1
 
     init {
-        postChallenge()
+        id = savedStateHandle.get<Int>("id") ?: -1
+        if (id < 0) postChallenge() else {
+            getChallenge(id)
+        }
         getLabels()
         getStatisticUser()
     }
@@ -56,13 +62,49 @@ class ChallengeMakeViewModel @Inject constructor(
                 deleteLabel()
             }
             is ChallengeMakeEvent.SubmitExample -> {
-                postExample()
+                if (state.exId > 0) {
+                    putExample(state.exId)
+                    state = state.copy(exId = -1)
+                } else postExample()
             }
             is ChallengeMakeEvent.SubmitTarget -> {
-                postTarget()
+                if (state.targetId > 0) {
+                    putTarget(state.targetId)
+                    state = state.copy(targetId = -1)
+                } else postTarget()
             }
             is ChallengeMakeEvent.Submit -> {
                 putChallenge()
+            }
+            is ChallengeMakeEvent.EditExample -> {
+                state = state.copy(
+                    exId = event.id,
+                    ex_output = event.output,
+                    ex_input = event.input,
+                    ex_description = event.desc
+                )
+            }
+            is ChallengeMakeEvent.EditTarget -> {
+                state = state.copy(
+                    targetId = event.id,
+                    output = event.output,
+                    input = event.input
+                )
+            }
+            is ChallengeMakeEvent.CancelExample -> {
+                state = state.copy(
+                    exId = -1,
+                    ex_output = "",
+                    ex_input = "",
+                    ex_description = ""
+                )
+            }
+            is ChallengeMakeEvent.CancelTarget -> {
+                state = state.copy(
+                    targetId = -1,
+                    output = "",
+                    input = ""
+                )
             }
             is ChallengeMakeEvent.DeleteExample -> {
                 deleteExample(event.id)
@@ -106,16 +148,22 @@ class ChallengeMakeViewModel @Inject constructor(
         }
     }
 
-    fun getChallenge() {
+    fun getChallenge(id: Int?) {
         viewModelScope.launch {
-            val challengeResult = repository.getChallenge(state.challenge?.ID!!)
+            state = state.copy(isLoading = true)
+            val challengeResult = repository.getChallenge(id ?: state.challenge?.ID!!)
             when (val result = challengeResult) {
                 is AuthResult.Authorized -> {
                     state = state.copy(
-                        challenge = result.data
+                        challenge = result.data,
+                    )
+                    state = state.copy(
+                        title = state.challenge?.Title!!,
+                        description = state.challenge?.Description!!,
                     )
                 }
             }
+            state = state.copy(isLoading = false)
         }
     }
 
@@ -147,7 +195,26 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = exampleResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
+                }
+            }
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    fun putExample(id: Int) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val exampleResult = repository.putChallengeExample(
+                input = state.ex_input,
+                output = state.ex_output,
+                description = state.ex_description,
+                challengeid = state.challenge?.ID!!,
+                id = id
+            )
+            when (val result = exampleResult) {
+                is AuthResult.Authorized -> {
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -162,7 +229,7 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = exampleResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -179,7 +246,25 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = targetResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
+                }
+            }
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    fun putTarget(id: Int) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val targetResult = repository.putChallengeTarget(
+                input = state.input,
+                output = state.output,
+                challengeid = state.challenge?.ID!!,
+                id = id
+            )
+            when (val result = targetResult) {
+                is AuthResult.Authorized -> {
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -194,7 +279,7 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = targetResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -210,7 +295,7 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = labelResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -226,7 +311,7 @@ class ChallengeMakeViewModel @Inject constructor(
             )
             when (val result = labelResult) {
                 is AuthResult.Authorized -> {
-                    getChallenge()
+                    getChallenge(null)
                 }
             }
             state = state.copy(isLoading = false)
@@ -259,8 +344,5 @@ class ChallengeMakeViewModel @Inject constructor(
             )
         }
     }
-
-    //edit challenge, edit challenge examples, edit challenge targets, edit multi chal_lbl
-    //delete -, -, -, -
 
 }

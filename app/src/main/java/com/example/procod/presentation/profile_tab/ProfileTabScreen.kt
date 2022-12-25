@@ -1,5 +1,6 @@
 package com.example.procod.presentation.profile_tab
 
+import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,10 +11,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.procod.presentation.challenge_tab.components.ChallengeItem
-import com.example.procod.presentation.destinations.ChallengeMadeScreenDestination
+import com.example.procod.presentation.destinations.ChallengeMakeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -25,6 +26,7 @@ fun ProfileTabScreen(
     viewModel: ProfileTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
+    val activity = LocalContext.current as? Activity
 
     if (!state.isLoading) {
         Column(
@@ -85,16 +87,35 @@ fun ProfileTabScreen(
             LazyColumn() {
                 items(state.challenges.size) { i ->
                     val challenge = state.challenges[i]
-                    Column(
-                        modifier = Modifier.clickable {
-                            navigator.navigate(
-                                ChallengeMadeScreenDestination(challenge.ID!!)
-                            )
+                    Row() {
+                        Column(
+                            modifier = Modifier.clickable {
+                                navigator.navigate(
+                                    ChallengeMakeScreenDestination(challenge.ID!!)
+                                )
+                            }
+                        ){
+                            Text(text = challenge.Title!!)
+                            Text(text = challenge.Description!!)
                         }
-                    ){
-                        Text(text = challenge.Title!!)
-                        Text(text = challenge.Description!!)
+                        Button(onClick = { viewModel.onEvent(ProfileTabEvent.Delete(challenge.ID!!)) }) {
+                            Text(text = "Delete")
+                        }
                     }
+                }
+            }
+            Row() {
+                Button(onClick = {
+                    viewModel.onEvent(ProfileTabEvent.DeleteProfile)
+                    activity?.finish()
+                }) {
+                    Text(text = "Delete Profile")
+                }
+                Button(onClick = {
+                    viewModel.onEvent(ProfileTabEvent.Logout)
+                    activity?.finish()
+                }) {
+                    Text(text = "Logout")
                 }
             }
         }

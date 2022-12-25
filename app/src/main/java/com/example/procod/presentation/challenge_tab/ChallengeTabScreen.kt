@@ -38,7 +38,7 @@ fun ChallengeTabScreen(
             FloatingActionButton(
                 onClick = {
                     navigator.navigate(
-                        ChallengeMakeScreenDestination(id)
+                        ChallengeMakeScreenDestination(-1)
                     )
                 }
             ) {

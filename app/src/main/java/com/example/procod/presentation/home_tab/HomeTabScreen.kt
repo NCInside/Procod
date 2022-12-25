@@ -1,5 +1,6 @@
 package com.example.procod.presentation.home_tab
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -11,16 +12,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
 import com.example.procod.presentation.home_tab.components.ChallengeCard
 import com.example.procod.presentation.home_tab.components.UserCard
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun HomeTabScreen(
     id: Int,
+    navigator: DestinationsNavigator,
     viewModel: HomeTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -41,7 +45,15 @@ fun HomeTabScreen(
                     modifier = Modifier
                 ) {
                     items(state.challenges.size) { i ->
-                        ChallengeCard(challenge = state.challenges[i])
+                        val challenge = state.challenges[i]
+                        ChallengeCard(
+                            challenge = challenge,
+                            modifier = Modifier.clickable {
+                                navigator.navigate(
+                                    ChallengeWorkScreenDestination(challenge.ID!!)
+                                )
+                            }
+                        )
                     }
                 }
                 Text(

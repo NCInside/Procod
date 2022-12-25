@@ -6,6 +6,8 @@ import com.example.procod.model.Statistic
 
 data class ChallengeMakeState(
     val isLoading: Boolean = false,
+    val exId: Int = -1,
+    val targetId: Int = -1,
     val labels: List<Label> = emptyList(),
     val challenge: Challenge? = null,
     val title: String = "",

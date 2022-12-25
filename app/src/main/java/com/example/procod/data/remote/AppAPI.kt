@@ -33,6 +33,12 @@ interface AppAPI {
         @Body request: RegisterRequest
     ): User
 
+    @DELETE("users/{id}")
+    suspend fun deleteUser(
+        @Header("authorization") token: String,
+        @Path("id") id: Int,
+    )
+
     @GET("users")
     suspend fun getUsers(
         @Header("authorization") token: String
@@ -63,9 +69,22 @@ interface AppAPI {
         @Body request: ChallRequest
     )
 
+    @DELETE("challenges/{id}")
+    suspend fun deleteChallenge(
+        @Header("authorization") token: String,
+        @Path("id") id: Int
+    )
+
     @POST("challenges/example")
     suspend fun postChallengeExample(
         @Header("authorization") token: String,
+        @Body request: ExamRequest
+    )
+
+    @PUT("challenges/example/{id}")
+    suspend fun putChallengeExample(
+        @Header("authorization") token: String,
+        @Path("id") id: Int,
         @Body request: ExamRequest
     )
 
@@ -78,6 +97,13 @@ interface AppAPI {
     @POST("challenges/target")
     suspend fun postChallengeTarget(
         @Header("authorization") token: String,
+        @Body request: TargetRequest
+    )
+
+    @PUT("challenges/target/{id}")
+    suspend fun putChallengeTarget(
+        @Header("authorization") token: String,
+        @Path("id") id: Int,
         @Body request: TargetRequest
     )
 

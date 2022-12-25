@@ -48,6 +48,15 @@ class ProfileTabViewModel @Inject constructor(
                 state = state.copy(isEditing = false)
                 putUser()
             }
+            is ProfileTabEvent.Delete -> {
+                deleteChallenge(event.id)
+            }
+            is ProfileTabEvent.DeleteProfile -> {
+                deleteUser()
+            }
+            is ProfileTabEvent.Logout -> {
+                repository.logout()
+            }
         }
     }
 
@@ -88,6 +97,13 @@ class ProfileTabViewModel @Inject constructor(
         }
     }
 
+    private fun deleteUser() {
+        viewModelScope.launch {
+            repository.deleteUser()
+            repository.logout()
+        }
+    }
+
     private fun getStatisticUser() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
@@ -101,6 +117,15 @@ class ProfileTabViewModel @Inject constructor(
                     )
                 }
             }
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    private fun deleteChallenge(id: Int) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            repository.deleteChallenge(id)
+            getUser(null)
             state = state.copy(isLoading = false)
         }
     }
