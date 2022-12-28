@@ -78,6 +78,13 @@ fun ChallengeItemPrev() {
                     ID = 1,
                     Label = "Bruh",
                     UpdatedAt = null
+                ),
+                Label(
+                    CreatedAt = null,
+                    DeletedAt = null,
+                    ID = 2,
+                    Label = "Bruh",
+                    UpdatedAt = null
                 )
             ),
             ChallengeTargets = null,
