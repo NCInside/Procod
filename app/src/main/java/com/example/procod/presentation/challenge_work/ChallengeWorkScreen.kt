@@ -78,7 +78,7 @@ fun ChallengeWorkScreen(
                     .padding(0.dp)
                     .fillMaxWidth()
                     .heightIn(0.dp, 120.dp)
-                .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState())
 
 
             )
@@ -270,5 +270,14 @@ fun ChallengeWorkScreen(
 
             }}
         }})
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if(state.isLoading) {
+            CircularProgressIndicator(color = colorResource(R.color.color1))
+        }
     }
 }
