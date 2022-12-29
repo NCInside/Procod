@@ -4,17 +4,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
+import com.example.procod.presentation.destinations.ProfileTabScreenDestination
 import com.example.procod.presentation.home_tab.components.ChallengeCard
 import com.example.procod.presentation.home_tab.components.UserCard
+import com.example.procod.presentation.login.LoginEvent
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -56,9 +60,13 @@ fun HomeTabScreen(
                         )
                     }
                 }
-                Text(
-                    text = "Profile"
-                )
+                ClickableText(
+                    text = AnnotatedString("Profile"),
+                    onClick = {  navigator.navigate(
+                        ProfileTabScreenDestination(-1)
+                    ) },
+
+                    )
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,

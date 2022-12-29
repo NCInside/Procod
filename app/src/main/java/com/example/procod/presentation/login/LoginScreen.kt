@@ -49,7 +49,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(ChallengeTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
+                    navigator.navigate(HomeTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }
@@ -81,7 +81,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+        Image(painter = painterResource(id = R.drawable.procode_white),
             contentDescription =" Logo" ,
             modifier = Modifier.weight(1f)
         )
@@ -99,7 +99,7 @@ fun LoginScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(top = 20.dp).padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                .padding(top = 0.dp).padding(horizontal = 10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Text(text = if (state.isLogin) "LOG IN" else "REGISTER", fontWeight = FontWeight.Bold,
                 fontSize = 32.sp)
 
@@ -123,6 +123,19 @@ fun LoginScreen(
                 text = "Email"
             )
             OutlinedTextField(
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    disabledTextColor = Color.Transparent,
+                    placeholderColor = Color.Black,
+                    disabledPlaceholderColor= Color.Black,
+                    disabledLabelColor = Color.Black,
+                    errorLabelColor = Color.Black,
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color.Black,
+                    cursorColor = Color.Black,
+                    errorCursorColor = Color.Black,
+                    focusedBorderColor = colorResource(R.color.color1),
+
+                    ),
                 value = state.email,
                 label = { Text(text = "Email")},
                 onValueChange = { viewModel.onEvent(LoginEvent.OnEmailChange(it)) },
@@ -134,6 +147,19 @@ fun LoginScreen(
                 text = "Password"
             )
             OutlinedTextField(
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    disabledTextColor = Color.Transparent,
+                    placeholderColor = Color.Black,
+                    disabledPlaceholderColor= Color.Black,
+                    disabledLabelColor = Color.Black,
+                    errorLabelColor = Color.Black,
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color.Black,
+                    cursorColor = Color.Black,
+                    errorCursorColor = Color.Black,
+                    focusedBorderColor = colorResource(R.color.color1),
+
+                    ),
                 value = state.password,
                 label = { Text(text = "Password")},
                 onValueChange = { viewModel.onEvent(LoginEvent.OnPasswordChange(it)) },
