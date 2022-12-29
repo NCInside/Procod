@@ -14,22 +14,22 @@ import androidx.compose.ui.unit.sp
 import com.example.procod.model.Label
 
 @Composable
-fun LabelItem(
+fun LabelItem2(
     label: Label,
     size: TextUnit,
     color: Color,
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(20),
+        shape = RoundedCornerShape(25),
         backgroundColor = color,
         modifier = modifier.padding(vertical = 0.dp).padding(horizontal = 0.dp)
     ) {
         Text(
             text = label.Label!!,
-            fontSize = 10.sp,
-            color = Color.Black,
-            modifier = modifier.padding(vertical = 1.dp).padding(horizontal = 1.dp)
+            fontSize = 13.sp,
+            color = Color.White,
+            modifier = modifier.padding(vertical = 1.dp).padding(horizontal = 5.dp).padding(start = 1.dp)
 
         )
     }
