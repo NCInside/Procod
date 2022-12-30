@@ -1,4 +1,4 @@
-package com.example.procod.presentation.sandbox_tab
+package com.example.procod.presentation.challenge_tab.sandbox_tab
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

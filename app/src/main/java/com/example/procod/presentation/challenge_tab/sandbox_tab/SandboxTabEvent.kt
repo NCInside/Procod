@@ -1,4 +1,4 @@
-package com.example.procod.presentation.sandbox_tab
+package com.example.procod.presentation.challenge_tab.sandbox_tab
 
 sealed class SandboxTabEvent {
     object Run: SandboxTabEvent()

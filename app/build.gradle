@@ -107,4 +107,7 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.3"
 
     implementation("com.himanshoe:charty:1.0.1")
+
+    // splashscreen
+    implementation('androidx.core:core-splashscreen:1.0.0-alpha02')
 }
