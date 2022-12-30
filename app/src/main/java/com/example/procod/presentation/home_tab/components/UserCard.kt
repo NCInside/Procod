@@ -10,10 +10,14 @@ import com.example.procod.model.User
 @Composable
 fun UserCard(
     user: User,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rank: Int
 ) {
     Card() {
         Row() {
+            Text(
+                text = rank.toString()
+            )
             Text(
                 text = user.Username!!
             )

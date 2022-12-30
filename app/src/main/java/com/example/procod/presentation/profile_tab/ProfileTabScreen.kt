@@ -42,6 +42,8 @@ fun ProfileTabScreen(
     val activity = LocalContext.current as? Activity
 
     if (!state.isLoading) {
+
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
