@@ -81,7 +81,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.procode_white),
+        Image(painter = painterResource(id = R.drawable.procod_white),
             contentDescription =" Logo" ,
             modifier = Modifier.weight(1f)
         )
