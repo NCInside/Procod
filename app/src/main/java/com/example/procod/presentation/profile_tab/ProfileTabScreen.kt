@@ -233,7 +233,7 @@ fun ProfileTabScreen(
                     Row(  modifier = Modifier
                         .padding(8.dp)
                         .padding(start = 10.dp)
-                        .clickable { viewModel.onEvent(ProfileTabEvent.Logout) },){
+                        .clickable { viewModel.onEvent(ProfileTabEvent.Logout) }){
                         Icon(
                             Icons.Rounded.ExitToApp,
                             contentDescription = "",
@@ -247,7 +247,8 @@ fun ProfileTabScreen(
                                 .padding(horizontal = 8.dp)
                                 .padding(vertical = 4.dp)
                                 .fillMaxWidth()
-                                .clickable { viewModel.onEvent(ProfileTabEvent.Logout) }
+                                .clickable { viewModel.onEvent(ProfileTabEvent.Logout)
+                                    activity?.finish() }
                         )
                     }
                     Row(  modifier = Modifier

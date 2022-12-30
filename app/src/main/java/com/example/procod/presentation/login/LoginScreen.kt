@@ -49,7 +49,7 @@ fun LoginScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(HomeTabScreenDestination(0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
+                    navigator.navigate(HomeTabScreenDestination (0)) { //Ubah ProfileTabScreenDestination ke {isi iki}ScreenDestination sg kon mau liat
                         popUpTo(LoginScreenDestination.route) {
                             inclusive = true
                         }
@@ -108,7 +108,7 @@ fun LoginScreen(
 
             if (!state.isLogin) {
                 Text(
-                    text = "Username"
+                    text = "Username", Modifier.padding(top = 7.dp)
                 )
                 OutlinedTextField(
                     value = state.username,
@@ -120,7 +120,7 @@ fun LoginScreen(
                 )
             }
             Text(
-                text = "Email"
+                text = "Email", Modifier.padding(top = 7.dp)
             )
             OutlinedTextField(
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -144,7 +144,7 @@ fun LoginScreen(
                     .fillMaxWidth(),
             )
             Text(
-                text = "Password"
+                text = "Password", Modifier.padding(top = 7.dp)
             )
             OutlinedTextField(
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -172,7 +172,7 @@ fun LoginScreen(
                     viewModel.onEvent(LoginEvent.ButtonClick)
 
                 },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(vertical = 10.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor =colorResource(R.color.color1) )
             ) {
