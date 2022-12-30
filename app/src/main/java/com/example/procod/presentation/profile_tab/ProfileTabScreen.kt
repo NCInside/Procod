@@ -52,6 +52,7 @@ fun ProfileTabScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(16.dp)
                     .padding(bottom = it.calculateBottomPadding())
                     .verticalScroll(rememberScrollState())
             ) {

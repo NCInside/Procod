@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+//import androidx.compose.ui.text.style.TextDrawStyle.Unspecified.color
 import androidx.compose.ui.unit.dp
 import com.example.procod.presentation.destinations.ChallengeTabScreenDestination
 import com.example.procod.presentation.destinations.HomeTabScreenDestination
@@ -23,7 +25,10 @@ fun BottomNavBar(
     navigator: DestinationsNavigator
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().background(Color.White).padding(vertical = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colorResource(com.example.procod.R.color.color1))
+            .padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -35,8 +40,8 @@ fun BottomNavBar(
             },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Filled.Home, contentDescription = "Home")
-            Text(text = "Home")
+            Icon(Icons.Filled.Home, contentDescription = "Home", tint= Color.White)
+            Text(text = "Home", color = Color.White)
         }
         Column(
             modifier = Modifier.clickable {
@@ -46,8 +51,8 @@ fun BottomNavBar(
             },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Filled.Star, contentDescription = "Sandbox")
-            Text(text = "Sandbox")
+            Icon(Icons.Filled.Star, contentDescription = "Sandbox", tint= Color.White)
+            Text(text = "Sandbox", color = Color.White)
         }
         Column(
             modifier = Modifier.clickable {
@@ -57,8 +62,8 @@ fun BottomNavBar(
             },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Filled.List, contentDescription = "Challenge")
-            Text(text = "Challenge")
+            Icon(Icons.Filled.List, contentDescription = "Challenge",tint= Color.White)
+            Text(text = "Challenge", color = Color.White)
         }
         Column(
             modifier = Modifier.clickable {
@@ -68,8 +73,8 @@ fun BottomNavBar(
             },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Filled.Person, contentDescription = "Profile")
-            Text(text = "Profile")
+            Icon(Icons.Filled.Person, contentDescription = "Profile",tint= Color.White)
+            Text(text = "Profile", color = Color.White)
         }
     }
 }

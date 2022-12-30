@@ -39,8 +39,9 @@ fun SandboxTabScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = colorResource(id = R.color.color1),
                 title = {
-                    Text(text = "Sandbox")
+                    Text(text = "Sandbox", color = Color.White)
                 }
             )
         },
