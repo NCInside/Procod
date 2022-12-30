@@ -125,6 +125,14 @@ fun ChallengeMakeScreen(
             )
 
             if (state.challenge?.ChallengeExamples != null) {
+                Text(
+                    text = "Examples:",
+                    modifier = Modifier
+                        .padding(horizontal = 0.dp)
+                        .padding(top = 16.dp)
+                        .padding(bottom = 5.dp)
+                        .fillMaxWidth(),
+                )
                 LazyColumn(
                     modifier = Modifier
                         .height(100.dp)
@@ -286,10 +294,21 @@ fun ChallengeMakeScreen(
                 }
             }
             if (state.challenge?.ChallengeTargets != null) {
+                Text(
+                    text = "Targets:",
+                    modifier = Modifier
+                        .padding(horizontal = 0.dp)
+                        .padding(top = 16.dp)
+                        .padding(bottom = 5.dp)
+                        .fillMaxWidth(),
+                )
                 LazyColumn(
                     modifier = Modifier
                         .height(100.dp)
                         .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .border(1.dp, colorResource(R.color.color1))
+
                 ) {
                     items(state.challenge.ChallengeTargets.size!!) { i ->
                         val target = state.challenge.ChallengeTargets[i]
@@ -306,9 +325,8 @@ fun ChallengeMakeScreen(
                             Button(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = colorResource(
-                                        R.color.color2
-                                    ), contentColor = Color.White
+                                    backgroundColor = Color.Yellow
+                                    , contentColor = Color.Black
                                 ),
                                 modifier = Modifier
                                     .padding(end = 5.dp),
@@ -326,9 +344,8 @@ fun ChallengeMakeScreen(
                             Button(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = colorResource(
-                                        R.color.color2
-                                    ), contentColor = Color.White
+                                    backgroundColor = Color.Yellow
+                                    , contentColor = Color.Black
                                 ),
                                 modifier = Modifier
                                     .padding(end = 5.dp),
@@ -419,6 +436,7 @@ fun ChallengeMakeScreen(
                 }
             }
             if (state.challenge?.ChallengeLabels != null) {
+
                 LazyRow() {
                     items(state.challenge.ChallengeLabels.size!!) { i ->
                         val label = state.challenge.ChallengeLabels[i]

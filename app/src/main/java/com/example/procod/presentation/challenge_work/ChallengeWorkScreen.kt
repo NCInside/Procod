@@ -259,12 +259,19 @@ fun ChallengeWorkScreen(
                             .padding(5.dp),
                         color =Color.White,
 
-
                     )
                 }  else if (state.result.status.id == 3 && state.result.stdout == "${state.challenge.ChallengeTargets?.get(0)!!.Target_output!!}\n") {
-                    Text(text = "Result: Correct!")
+                    Text(text = "Result: Correct!", Modifier
+                        .fillMaxWidth()
+                        .background(color = colorResource(R.color.color2))
+                        .padding(5.dp),
+                        color =Color.White,)
                 } else if (state.result.status.id == 3) {
-                    Text(text = "Result: Incorrect!")
+                    Text(text = "Result: Incorrect!", Modifier
+                        .fillMaxWidth()
+                        .background(color = colorResource(R.color.color2))
+                        .padding(5.dp),
+                        color =Color.White,)
                 }}
                 // result
 

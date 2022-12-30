@@ -1,8 +1,7 @@
 package com.example.procod.presentation.home_tab
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 //import androidx.compose.foundation.layout.RowScopeInstance.weight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,6 +46,7 @@ fun HomeTabScreen(
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
 //            .background(color= colorResource(R.color.color1))
     ) {
         SwipeRefresh(
@@ -169,13 +170,63 @@ fun HomeTabScreen(
 
             }
         }
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(horizontal= 16.dp).padding(top = 10.dp)) {
 
                 Text(
                     text = "Tips & Tricks",
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp
                 )
+                Card(shape = RoundedCornerShape(10),
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp)
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    backgroundColor = colorResource(R.color.color3)
+                ) {
+
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(colorResource(R.color.color3)),
+                    ) {
+                        Column(
+
+                        ) {
+                            Text(
+                                text = "Logic First",
+                                color = Color.White,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .padding(top = 5.dp)
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Focus on the logic of your program first before starting to code.",
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Light,
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 2,
+                                    fontSize =11.sp,
+                                    modifier = Modifier
+//                                        .width(90.dp)
+                                        .padding(8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
                 }
 
         Column(modifier = Modifier.padding(16.dp)) {
@@ -245,7 +296,12 @@ fun HomeTabScreen(
                shape = RoundedCornerShape(10)
 
                 )
-                        Row(modifier = Modifier.fillMaxWidth().padding(start= 16.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth().padding(start= 16.dp)
+                            .padding(top = 5.dp)
+                            .padding(bottom = 3.dp)
+                        , verticalAlignment = Alignment.CenterVertically
+
+                        ) {
                             Text(text = "Rank",
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
@@ -262,15 +318,17 @@ fun HomeTabScreen(
                         }
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
+                        .heightIn(250.dp,250.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     items(state.users.size) { i ->
-                        UserCard(user = state.users[i], modifier = Modifier,i+1)
+                        UserCard(user = state.users[i], modifier = Modifier,i+1,state)
+
                     }
                 }
             }
         }
     }
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
