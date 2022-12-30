@@ -50,6 +50,7 @@ fun ChallengeWorkScreen(
                     },
                     navigationIcon = {
                         IconButton(onClick = {
+                            navigator.navigateUp()
 //                            navigator.navigate(
 //                                ProfileTabScreenDestination(-1)
 //                            )

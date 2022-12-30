@@ -28,6 +28,7 @@ import com.example.procod.R
 import com.example.procod.presentation.challenge_work.ChallengeWorkEvent
 import com.example.procod.presentation.destinations.ChallengeMakeScreenDestination
 import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
+import com.example.procod.util.BottomNavBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -41,129 +42,133 @@ fun ProfileTabScreen(
     val state = viewModel.state
     val activity = LocalContext.current as? Activity
 
-    if (!state.isLoading) {
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(navigator = navigator)
+        }
+    ) {
+        if (!state.isLoading) {
 
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp)
-
+                    .padding(bottom = it.calculateBottomPadding())
+                    .verticalScroll(rememberScrollState())
             ) {
-                Text(
-                    text = "My Profile",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp
-                )
-                Image(painter = painterResource(id = R.drawable.ic_baseline_account_circle_24,),
-                    contentDescription ="Picture" ,
-                    modifier = Modifier.size(150.dp)
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp)
 
-                Text(
-                    text = state.username,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-                Text(
-                    text = state.email,
-                )
+                ) {
+                    Text(
+                        text = "My Profile",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp
+                    )
+                    Image(painter = painterResource(id = R.drawable.ic_baseline_account_circle_24,),
+                        contentDescription ="Picture" ,
+                        modifier = Modifier.size(150.dp)
+                    )
 
-                Card(shape = RoundedCornerShape(30), modifier = Modifier.padding(top = 16.dp)
-                   ) {
-                Row(modifier = Modifier
-                    .padding(0.dp)
-                    .background(color = colorResource(R.color.color1))
-                    .padding(10.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                   ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(
-                            text = "Challenge Attempted",
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                        Text(
-                            text = state.chalAttempt.toString(),
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(
-                            text = "Challenge Completed",
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                        Text(
-                            text = state.chalComplete.toString(),
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.SpaceEvenly,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .weight(1f)
+                    Text(
+                        text = state.username,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = state.email,
+                    )
 
+                    Card(shape = RoundedCornerShape(30), modifier = Modifier.padding(top = 16.dp)
                     ) {
-                        Text(
-                            text = "Challenge Made",
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                        Text(
-                            text = state.chalMade.toString(),
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }}
-            }
-            Text(
-                text = "Challenges Made", fontWeight = FontWeight.Bold, fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .padding(start = 5.dp)
-            )
-            Column(modifier = Modifier) {
-            LazyColumn(modifier = Modifier
-                .heightIn(0.dp, 190.dp)) {
-                items(state.challenges.size) { i ->
-                    val challenge = state.challenges[i]
-                    com.example.procod.presentation.profile_tab.Components.ChallengeItem(
-                        challenge = challenge,
-                        modifier = Modifier
-                            .padding(horizontal = 0.dp)
-                            .padding(vertical = 5.dp)
-                            .clickable {
-                                navigator.navigate(
-                                    ChallengeMakeScreenDestination(challenge.ID!!)
+                        Row(modifier = Modifier
+                            .padding(0.dp)
+                            .background(color = colorResource(R.color.color1))
+                            .padding(10.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                Text(
+                                    text = "Challenge Attempted",
+                                    textAlign = TextAlign.Center,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = state.chalAttempt.toString(),
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
-                    )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                Text(
+                                    text = "Challenge Completed",
+                                    textAlign = TextAlign.Center,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = state.chalComplete.toString(),
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                            Column(
+                                verticalArrangement = Arrangement.SpaceEvenly,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .weight(1f)
+
+                            ) {
+                                Text(
+                                    text = "Challenge Made",
+                                    textAlign = TextAlign.Center,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = state.chalMade.toString(),
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }}
                 }
-            }}
+                Text(
+                    text = "Challenges Made", fontWeight = FontWeight.Bold, fontSize = 18.sp,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .padding(start = 5.dp)
+                )
+                Column(modifier = Modifier) {
+                    LazyColumn(modifier = Modifier
+                        .heightIn(0.dp, 190.dp)) {
+                        items(state.challenges.size) { i ->
+                            val challenge = state.challenges[i]
+                            com.example.procod.presentation.profile_tab.Components.ChallengeItem(
+                                challenge = challenge,
+                                modifier = Modifier
+                                    .padding(horizontal = 0.dp)
+                                    .padding(vertical = 5.dp)
+                                    .clickable {
+                                        navigator.navigate(
+                                            ChallengeMakeScreenDestination(challenge.ID!!)
+                                        )
+                                    }
+                            )
+                        }
+                    }}
 //            Column() {
 //                Button(onClick = {
 //                    viewModel.onEvent(ProfileTabEvent.DeleteProfile)
@@ -184,19 +189,19 @@ fun ProfileTabScreen(
 //                }
 //            }
 
-            Text(
-                text = "Profile Settings", fontWeight = FontWeight.Bold, fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .padding(start = 5.dp)
-            )
-            Card(
-                shape = RoundedCornerShape(10),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 6.dp)){
-                Column(modifier = Modifier.background(color = colorResource(R.color.grayl))) {
-                    Row(modifier = Modifier.background(color = colorResource(R.color.grayl))) {
+                Text(
+                    text = "Profile Settings", fontWeight = FontWeight.Bold, fontSize = 18.sp,
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .padding(start = 5.dp)
+                )
+                Card(
+                    shape = RoundedCornerShape(10),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 6.dp)){
+                    Column(modifier = Modifier.background(color = colorResource(R.color.grayl))) {
+                        Row(modifier = Modifier.background(color = colorResource(R.color.grayl))) {
 
 //                        Text(
 //                            text = "Profile",
@@ -207,75 +212,78 @@ fun ProfileTabScreen(
 //                                .fillMaxWidth()
 //                        )
 
-                    }
+                        }
 
-                    Row(  modifier = Modifier
-                        .padding(8.dp)
-                        .padding(start = 10.dp)
-                        .padding(top = 5.dp)
-                        .clickable { viewModel.onEvent(ProfileTabEvent.EditProfile) },){
-                        Icon(
-                            Icons.Rounded.AccountCircle,
-                            contentDescription = "",
-                            modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.EditProfile) },
-                            tint = Color.Black
-                        )
-                        Text(
-                            text = "Edit Profile",
-                            color = Color.Black,
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .padding(vertical = 4.dp)
-                                .fillMaxWidth()
-                                .clickable { viewModel.onEvent(ProfileTabEvent.EditProfile) }
-                        )
-                    }
-                    Row(  modifier = Modifier
-                        .padding(8.dp)
-                        .padding(start = 10.dp)
-                        .clickable { viewModel.onEvent(ProfileTabEvent.Logout) }){
-                        Icon(
-                            Icons.Rounded.ExitToApp,
-                            contentDescription = "",
-                            modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.Logout) },
-                            tint = Color.Black
-                        )
-                        Text(
-                            text = "Log Out",
-                            color = Color.Black,
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .padding(vertical = 4.dp)
-                                .fillMaxWidth()
-                                .clickable { viewModel.onEvent(ProfileTabEvent.Logout)
-                                    activity?.finish() }
-                        )
-                    }
-                    Row(  modifier = Modifier
-                        .padding(8.dp)
-                        .padding(start = 10.dp)
-                        .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile) },){
-                        Icon(
-                            Icons.Rounded.Delete,
-                            contentDescription = "",
-                            modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.DeleteProfile) },
-                            tint = Color.Black
-                        )
-                        Text(
-                            text = "Delete Profile",
-                            color = Color.Black,
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .padding(vertical = 4.dp)
-                                .fillMaxWidth()
-                                .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile) }
-                        )
-                    }
+                        Row(  modifier = Modifier
+                            .padding(8.dp)
+                            .padding(start = 10.dp)
+                            .padding(top = 5.dp)
+                            .clickable { viewModel.onEvent(ProfileTabEvent.EditProfile) },){
+                            Icon(
+                                Icons.Rounded.AccountCircle,
+                                contentDescription = "",
+                                modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.EditProfile) },
+                                tint = Color.Black
+                            )
+                            Text(
+                                text = "Edit Profile",
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .padding(vertical = 4.dp)
+                                    .fillMaxWidth()
+                                    .clickable { viewModel.onEvent(ProfileTabEvent.EditProfile) }
+                            )
+                        }
+                        Row(  modifier = Modifier
+                            .padding(8.dp)
+                            .padding(start = 10.dp)
+                            .clickable { viewModel.onEvent(ProfileTabEvent.Logout) }){
+                            Icon(
+                                Icons.Rounded.ExitToApp,
+                                contentDescription = "",
+                                modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.Logout) },
+                                tint = Color.Black
+                            )
+                            Text(
+                                text = "Log Out",
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .padding(vertical = 4.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        viewModel.onEvent(ProfileTabEvent.Logout)
+                                        activity?.finish()
+                                    }
+                            )
+                        }
+                        Row(  modifier = Modifier
+                            .padding(8.dp)
+                            .padding(start = 10.dp)
+                            .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile) },){
+                            Icon(
+                                Icons.Rounded.Delete,
+                                contentDescription = "",
+                                modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.DeleteProfile) },
+                                tint = Color.Black
+                            )
+                            Text(
+                                text = "Delete Profile",
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .padding(vertical = 4.dp)
+                                    .fillMaxWidth()
+                                    .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile) }
+                            )
+                        }
 
 
-                }}
+                    }}
 
 
+            }
         }
     }
 

@@ -26,6 +26,7 @@ import com.example.procod.presentation.challenge_tab.components.LabelItem2
 import com.example.procod.presentation.destinations.ChallengeMakeScreenDestination
 import com.example.procod.presentation.destinations.ChallengeWorkScreenDestination
 import com.example.procod.presentation.destinations.SandboxTabScreenDestination
+import com.example.procod.util.BottomNavBar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -47,7 +48,7 @@ fun ChallengeTabScreen(
                 modifier = Modifier,
                 onClick = {
                     navigator.navigate(
-                        SandboxTabScreenDestination(-1)
+                        ChallengeMakeScreenDestination(-1)
                     )
                 },
                 backgroundColor = colorResource(R.color.color1),
@@ -55,6 +56,9 @@ fun ChallengeTabScreen(
             ) {
                 Icon(Icons.Filled.Add, "")
             }
+        },
+        bottomBar = {
+            BottomNavBar(navigator = navigator)
         }
     ) { paddingValues ->
         Column(

@@ -23,13 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.procod.R
 import com.example.procod.presentation.challenge_work.ChallengeWorkEvent
+import com.example.procod.util.BottomNavBar
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Destination
 fun SandboxTabScreen(
     id: Int,
+    navigator: DestinationsNavigator,
     viewModel: SandboxTabViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -38,21 +41,13 @@ fun SandboxTabScreen(
             TopAppBar(
                 title = {
                     Text(text = "Sandbox")
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-//                            navigator.navigate(
-//                                ProfileTabScreenDestination(-1)
-//                            )
-                    }) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back Btn")
-                    }
-                },
-                backgroundColor = colorResource(R.color.color1),
-                contentColor = Color.White,
-                elevation = 2.dp
+                }
             )
-        }, content = {
+        },
+        bottomBar = {
+                 BottomNavBar(navigator = navigator)
+        },
+        content = {
     Column(modifier = Modifier
         .padding(16.dp)
         .verticalScroll(rememberScrollState())
@@ -149,7 +144,7 @@ fun SandboxTabScreen(
                     modifier = Modifier
                         .padding(0.dp)
                         .fillMaxWidth()
-                        .heightIn(40.dp,50.dp)
+                        .heightIn(40.dp, 50.dp)
                         .background(color = colorResource(R.color.color2))
                 )
 
@@ -235,7 +230,8 @@ fun SandboxTabScreen(
                             color = Color.White,
                             modifier = Modifier
                                 .padding(horizontal = 8.dp)
-                                .padding(vertical = 1.dp).padding(bottom = 5.dp)
+                                .padding(vertical = 1.dp)
+                                .padding(bottom = 5.dp)
                                 .fillMaxWidth()
                         )
                     }}
