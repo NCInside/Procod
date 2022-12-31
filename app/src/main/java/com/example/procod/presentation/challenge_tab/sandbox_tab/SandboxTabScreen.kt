@@ -114,7 +114,10 @@ fun SandboxTabScreen(
                         Icon(
                             Icons.Rounded.PlayArrow,
                             contentDescription = "",
-                            modifier = Modifier.clickable {   viewModel.onEvent(SandboxTabEvent.Run)  },
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+
+                                .clickable {   viewModel.onEvent(SandboxTabEvent.Run)  },
                             tint = Color.White
                         )
                         Icon(

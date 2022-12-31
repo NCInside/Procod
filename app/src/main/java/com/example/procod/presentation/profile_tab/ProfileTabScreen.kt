@@ -266,7 +266,9 @@ fun ProfileTabScreen(
                             Icon(
                                 Icons.Rounded.Delete,
                                 contentDescription = "",
-                                modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.DeleteProfile) },
+                                modifier = Modifier.clickable {   viewModel.onEvent(ProfileTabEvent.DeleteProfile)
+                                    activity?.finish()
+                                                              },
                                 tint = Color.Black
                             )
                             Text(

@@ -139,7 +139,9 @@ fun ChallengeWorkScreen(
                             Icon(
                                 Icons.Rounded.PlayArrow,
                                 contentDescription = "",
-                                modifier = Modifier.clickable {   viewModel.onEvent(ChallengeWorkEvent.Submit)  },
+                                modifier = Modifier
+                                    .padding(end = 8.dp)
+                                    .clickable {   viewModel.onEvent(ChallengeWorkEvent.Submit)  },
                                 tint = Color.White
                             )
                             Icon(

@@ -46,7 +46,7 @@ fun UserCard(
             Row(modifier = Modifier
                 .width(220.dp)
                 .padding(horizontal = 60.dp)
-                , horizontalArrangement = Arrangement.SpaceBetween
+                , horizontalArrangement = Arrangement.Start
 
             ){
 
