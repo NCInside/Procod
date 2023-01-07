@@ -278,7 +278,8 @@ fun ProfileTabScreen(
                                     .padding(horizontal = 8.dp)
                                     .padding(vertical = 4.dp)
                                     .fillMaxWidth()
-                                    .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile) }
+                                    .clickable { viewModel.onEvent(ProfileTabEvent.DeleteProfile)
+                                        activity?.finish()}
                             )
                         }
 
